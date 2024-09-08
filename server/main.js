@@ -1,27 +1,25 @@
-import express from 'express'
-const app = express()
-const port = 3000
+import { RoomsHandler } from "./rooms-handler.js";
 
-let rooms = {
-  "kdshvjdh": {
-    players: ["Eli", "Joe", "Darsh"]
-  },
-  "memasdia": {
-    players: ["CuteFlowerGirl1", "dragon_gems"]
-  },
-  "akdjasdd": {
-    players: ["MatPatGT", "Theorizer", "RaidShadowLegends"]
-  }
-}
+const roomsHandler = new RoomsHandler(3000);
 
-app.get('/rooms', (req, res) => {
-  res.send(JSON.stringify(Object.keys(rooms)));
-})
+roomsHandler.start();
 
-app.get('/rooms/:room', (req, res) => {
-  res.send(JSON.stringify(rooms[req.params.room]));
-})
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+
+import { createServer } from "http";
+import { Server } from "socket.io";
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
+io.on("connection", (socket) => {
+    console.log(socket)
+    io.emit("test", new Date().toDateString());
+});
+
+httpServer.listen(3500);
