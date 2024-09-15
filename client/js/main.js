@@ -1,9 +1,25 @@
-import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+import * as PIXI from "https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/+esm";
+import { TiledBackground } from "./pixi/common/TiledBackground.js";
+import { LoopedAudio } from "./audio/LoopedAudio.js";
+import { GameSettingsModal } from "./pixi/units/GameSettingsModal.js";
 
-const socket = io(`wss://didactic-space-goggles-v6779pqwg4fp9pq-3500.app.github.dev`, {
-  reconnectionDelayMax: 10000,
-});
+PIXI.BaseTexture.defaultOptions.scaleMode = 0;
 
-socket.on("test", (t) => {
-  console.log(t);
+const app = new PIXI.Application({ background: "#000000", resizeTo: window });
+document.body.appendChild(app.view);
+
+const bg = new TiledBackground("./assets/nes/img/bg/menu.png");
+app.stage.addChild(bg);
+
+const gameSettingsModal = new GameSettingsModal();
+app.stage.addChild(gameSettingsModal);
+gameSettingsModal.scale.x = 4;
+gameSettingsModal.scale.y = 4;
+
+let i = new LoopedAudio("./assets/nes/music/menu.mp3", 22088 / 44100, 867413 / 44100);
+
+app.ticker.add((delta) => {});
+
+document.addEventListener("click", () => {
+  i.play();
 });
