@@ -1,8 +1,8 @@
 import * as PIXI from "https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/+esm";
-import { MenuSlider } from "../common/MenuSlider";
-import { DisplayNumber } from "../common/DisplayNumber";
-import { playSound } from "../../audio/playSound";
-import { MenuSpriteSlider } from "../common/MenuSpriteSlider";
+import { MenuSlider } from "../common/MenuSlider.js";
+import { DisplayNumber } from "../common/DisplayNumber.js";
+import { playSound } from "../../audio/playSound.js";
+import { MenuSpriteSlider } from "../common/MenuSpriteSlider.js";
 
 export class GameSettingsModal extends PIXI.Container {
   modalSprite;
