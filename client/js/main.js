@@ -16,10 +16,10 @@ app.stage.addChild(gameSettingsModal);
 gameSettingsModal.scale.x = 4;
 gameSettingsModal.scale.y = 4;
 
-let i = new LoopedAudio("./assets/nes/music/menu.mp3", 22088 / 44100, 867413 / 44100);
+let menuBgm = new LoopedAudio("./assets/nes/music/menu.mp3", 22088 / 44100, 867413 / 44100);
 
 app.ticker.add((delta) => {});
 
 document.addEventListener("click", () => {
-  i.play();
+  menuBgm.play();
 });
