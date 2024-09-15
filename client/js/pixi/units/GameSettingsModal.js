@@ -148,21 +148,57 @@ export class GameSettingsModal extends PIXI.Container {
         }
       } else if (e.key === "ArrowRight") {
         if (this.selectedSetting === 0) {
+          const oldSelectedSetting = this.virusSlider.player1Value;
+
           this.virusSlider.setPlayer1Value(this.virusSlider.player1Value + 1)
           this.player1VirusCount.setNumber(this.virusSlider.player1Value);
+
+          if (oldSelectedSetting !== this.virusSlider.player1Value) {
+            playSound("./assets/nes/sfx/menu/select-leftright.wav")
+          }
         } else if (this.selectedSetting === 1) {
+          const oldSelectedSetting = this.speedSlider.player1Value;
+
           this.speedSlider.setPlayer1Value(this.speedSlider.player1Value + 1)
+
+          if (oldSelectedSetting !== this.speedSlider.player1Value) {
+            playSound("./assets/nes/sfx/menu/select-leftright.wav")
+          }
         } else if (this.selectedSetting === 2) {
+          const oldSelectedSetting = this.musicSlider.value;
+
           this.musicSlider.setValue(this.musicSlider.value + 1)
+
+          if (oldSelectedSetting !== this.musicSlider.value) {
+            playSound("./assets/nes/sfx/menu/select-leftright.wav")
+          }
         }
       } else if (e.key === "ArrowLeft") {
         if (this.selectedSetting === 0) {
+          const oldSelectedSetting = this.virusSlider.player1Value;
+          
           this.virusSlider.setPlayer1Value(this.virusSlider.player1Value - 1)
           this.player1VirusCount.setNumber(this.virusSlider.player1Value);
+
+          if (oldSelectedSetting !== this.virusSlider.player1Value) {
+            playSound("./assets/nes/sfx/menu/select-leftright.wav")
+          }
         } else if (this.selectedSetting === 1) {
+          const oldSelectedSetting = this.speedSlider.player1Value;
+
           this.speedSlider.setPlayer1Value(this.speedSlider.player1Value - 1)
+
+          if (oldSelectedSetting !== this.speedSlider.player1Value) {
+            playSound("./assets/nes/sfx/menu/select-leftright.wav")
+          }
         } else if (this.selectedSetting === 2) {
+          const oldSelectedSetting = this.musicSlider.value;
+
           this.musicSlider.setValue(this.musicSlider.value - 1)
+
+          if (oldSelectedSetting !== this.musicSlider.value) {
+            playSound("./assets/nes/sfx/menu/select-leftright.wav")
+          }
         }
       }
     })
