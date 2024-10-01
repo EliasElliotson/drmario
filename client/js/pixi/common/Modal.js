@@ -18,6 +18,11 @@ export class Modal extends PIXI.Container {
       this.modalTitleSprite.position.x = (216 - this.modalTitleSprite.texture.baseTexture.width) / 2;
     });
 
+    // Add sprites to container
+    this.addChild(this.modalSprite);
+    this.addChild(this.modalTitleSprite);
+
+    // Resizer event listeners
     window.addEventListener("resize", () => {
       this.updateDynamics();
     });
