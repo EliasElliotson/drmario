@@ -9,18 +9,18 @@ export class Modal extends PIXI.Container {
 
     // Modal sprite
     this.modalSprite = PIXI.Sprite.from("./assets/nes/img/gui-panels/menu.png");
+    this.addChild(this.modalSprite);
 
     // Modal title sprite
-    this.modalTitleSprite = titleSprite;
-    this.modalTitleSprite.position.y = 16;
+    if (titleSprite) {
+      this.modalTitleSprite = titleSprite;
+      this.modalTitleSprite.position.y = 16;
 
-    this.modalTitleSprite.texture.baseTexture.on("loaded", () => {
-      this.modalTitleSprite.position.x = (216 - this.modalTitleSprite.texture.baseTexture.width) / 2;
-    });
-
-    // Add sprites to container
-    this.addChild(this.modalSprite);
-    this.addChild(this.modalTitleSprite);
+      this.modalTitleSprite.texture.baseTexture.on("loaded", () => {
+        this.modalTitleSprite.position.x = (216 - this.modalTitleSprite.texture.baseTexture.width) / 2;
+      });
+      this.addChild(this.modalTitleSprite);
+    }
 
     // Resizer event listeners
     window.addEventListener("resize", () => {
