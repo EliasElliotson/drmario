@@ -16,6 +16,10 @@ export class WaitForOpponantModal extends Modal {
       this.updateMessagePosition();
     })
 
+    this.modalSprite.texture.baseTexture.on("loaded", () => {
+      this.updateMessagePosition();
+    })
+
     this.updateMessagePosition();
   }
 
