@@ -13,8 +13,14 @@ export class WaitForOpponantModal extends Modal {
 
     // Add positioning event listener
     this.opponentText.texture.baseTexture.on("loaded", () => {
-      this.opponentText.position.x = ((this.width / this.scale.x) - this.opponentText.width) / 2;
-      this.opponentText.position.y = ((this.height / this.scale.y) - this.opponentText.height) / 2;
+      this.updateMessagePosition();
     })
+
+    this.updateMessagePosition();
+  }
+
+  updateMessagePosition() {
+    this.opponentText.position.x = ((this.width / this.scale.x) - this.opponentText.width) / 2;
+    this.opponentText.position.y = ((this.height / this.scale.y) - this.opponentText.height) / 2;
   }
 }
