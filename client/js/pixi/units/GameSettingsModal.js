@@ -1,213 +1,99 @@
 import * as PIXI from "https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/+esm";
-import { MenuSlider } from "../common/MenuSlider.js";
-import { DisplayNumber } from "../common/DisplayNumber.js";
-import { playSound } from "../../audio/playSound.js";
-import { MenuSpriteSlider } from "../common/MenuSpriteSlider.js";
+import { MenuVirusSlider } from "./MenuVirusSlider";
+import { MenuSpeedSlider } from "./MenuSpeedSlider.js";
+import { MenuMusicSlider } from "./MenuMusicSlider.js";
 
 export class GameSettingsModal extends PIXI.Container {
   modalSprite;
+  modalTitleSprite;
   virusSlider;
-  player1VirusCount;
-  player1VirusCountOutline;
-  player2VirusCount;
-  player2VirusCountOutline;
   speedSlider;
   musicSlider;
-  virusCountHeading;
-  speedHeading;
-  musicTypeHeading;
-  modalTitleSprite;
-
-  selectedSetting = 0;
+  selectedSlider = 0;
 
   constructor() {
     super();
 
-    // Modal sprites
+    // Modal sprite
     this.modalSprite = PIXI.Sprite.from("./assets/nes/img/gui-panels/menu.png");
 
+    // Modal title sprite
     this.modalTitleSprite = PIXI.Sprite.from("./assets/nes/img/gui/menu-title.png");
     this.modalTitleSprite.position.x = 92;
     this.modalTitleSprite.position.y = 16;
 
-    // Virus settings
-    this.virusCountHeading = new MenuSpriteSlider([
-      "./assets/nes/img/gui/menu-label-viruses.png",
-      "./assets/nes/img/gui/menu-label-viruses-selected.png",
-    ]);
-    this.virusCountHeading.setValue(1);
-    this.virusCountHeading.position.x = 18;
-    this.virusCountHeading.position.y = 33;
+    // Virus slider
+    this.virusSlider = new MenuVirusSlider();
+    this.virusSlider.position.x = 18;
+    this.virusSlider.position.y = 33;
 
-    this.virusSlider = new MenuSlider(
-      {
-        sprite: "./assets/nes/img/gui/virus-scale.png",
-        tickSize: 4,
-        maxValue: 20,
-      },
-      "./assets/nes/img/gui/virus-selector-p1.png",
-      "./assets/nes/img/gui/virus-selector-p2.png"
-    );
+    // Speed slider
+    this.speedSlider = new MenuSpeedSlider();
+    this.speedSlider.position.x = 18;
+    this.speedSlider.position.y = 90;
 
-    this.virusSlider.position.x = 66;
-    this.virusSlider.position.y = 68;
+    // Music slider
+    this.musicSlider = new MenuMusicSlider();
+    this.musicSlider.position.x = 18;
+    this.musicSlider.position.y = 138;
 
-    this.player1VirusCount = new DisplayNumber("./assets/nes/img/gui/numbers.png", 2);
-    this.player1VirusCount.setNumber(0);
-    this.player1VirusCount.position.x = 163;
-    this.player1VirusCount.position.y = 55;
-
-    this.player2VirusCount = new DisplayNumber("./assets/nes/img/gui/numbers.png", 2);
-    this.player2VirusCount.setNumber(0);
-    this.player2VirusCount.position.x = 163;
-    this.player2VirusCount.position.y = 79;
-
-    this.player1VirusCountOutline = PIXI.Sprite.from(
-      "./assets/nes/img/gui/virus-count-outline.png"
-    );
-    this.player1VirusCountOutline.position.x = 156;
-    this.player1VirusCountOutline.position.y = 48;
-
-    this.player2VirusCountOutline = PIXI.Sprite.from(
-      "./assets/nes/img/gui/virus-count-outline.png"
-    );
-    this.player2VirusCountOutline.position.x = 156;
-    this.player2VirusCountOutline.position.y = 72;
-
-    // Speed settings
-    this.speedHeading = new MenuSpriteSlider([
-      "./assets/nes/img/gui/menu-label-speed.png",
-      "./assets/nes/img/gui/menu-label-speed-selected.png",
-    ]);
-    this.speedHeading.position.x = 18;
-    this.speedHeading.position.y = 90;
-
-    this.speedSlider = new MenuSlider(
-      {
-        sprite: "./assets/nes/img/gui/speed-scale.png",
-        tickSize: 38,
-        maxValue: 2,
-      },
-      "./assets/nes/img/gui/speed-selector-p1.png",
-      "./assets/nes/img/gui/speed-selector-p2.png"
-    );
-    this.speedSlider.setPlayer1Value(1);
-    this.speedSlider.setPlayer2Value(1);
-    this.speedSlider.position.x = 67;
-    this.speedSlider.position.y = 119;
-
-    // Music settings
-    this.musicTypeHeading = new MenuSpriteSlider([
-      "./assets/nes/img/gui/menu-label-music.png",
-      "./assets/nes/img/gui/menu-label-music-selected.png",
-    ]);
-    this.musicTypeHeading.position.x = 18;
-    this.musicTypeHeading.position.y = 138;
-
-    this.musicSlider = new MenuSpriteSlider([
-      "./assets/nes/img/gui/music-fever.png",
-      "./assets/nes/img/gui/music-chill.png",
-      "./assets/nes/img/gui/music-off.png",
-    ]);
-
-    this.musicSlider.position.x = 38;
-    this.musicSlider.position.y = 163;
-
-    // Add everything to the menu
+    // Add the menu sprites
     this.addChild(this.modalSprite);
-    this.addChild(this.virusSlider);
-    this.addChild(this.player1VirusCount);
-    this.addChild(this.player2VirusCount);
-    this.addChild(this.player1VirusCountOutline);
-    this.addChild(this.player2VirusCountOutline);
-    this.addChild(this.speedSlider);
-    this.addChild(this.musicSlider);
-    this.addChild(this.virusCountHeading);
-    this.addChild(this.speedHeading);
-    this.addChild(this.musicTypeHeading);
     this.addChild(this.modalTitleSprite);
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowDown") {
-        const oldSelectedSetting = this.selectedSetting;
+    // Add the menu sliders
+    this.addChild(this.virusSlider);
+    this.addChild(this.speedSlider);
+    this.addChild(this.musicSlider);
 
-        this.selectedSetting++;
-        this.updateSelectedSetting();
-
-        if (oldSelectedSetting !== this.selectedSetting) {
-          playSound("./assets/nes/sfx/menu/select-leftright.wav")
-        }
-      } else if (e.key === "ArrowUp") {
-        const oldSelectedSetting = this.selectedSetting;
-
-        this.selectedSetting--;
-        this.updateSelectedSetting();
-
-        if (oldSelectedSetting !== this.selectedSetting) {
-          playSound("./assets/nes/sfx/menu/select-leftright.wav")
-        }
-      } else if (e.key === "ArrowRight") {
-        if (this.selectedSetting === 0) {
-          const oldSelectedSetting = this.virusSlider.player1Value;
-
-          this.virusSlider.setPlayer1Value(this.virusSlider.player1Value + 1)
-          this.player1VirusCount.setNumber(this.virusSlider.player1Value);
-
-          if (oldSelectedSetting !== this.virusSlider.player1Value) {
-            playSound("./assets/nes/sfx/menu/select-leftright.wav")
-          }
-        } else if (this.selectedSetting === 1) {
-          const oldSelectedSetting = this.speedSlider.player1Value;
-
-          this.speedSlider.setPlayer1Value(this.speedSlider.player1Value + 1)
-
-          if (oldSelectedSetting !== this.speedSlider.player1Value) {
-            playSound("./assets/nes/sfx/menu/select-leftright.wav")
-          }
-        } else if (this.selectedSetting === 2) {
-          const oldSelectedSetting = this.musicSlider.value;
-
-          this.musicSlider.setValue(this.musicSlider.value + 1)
-
-          if (oldSelectedSetting !== this.musicSlider.value) {
-            playSound("./assets/nes/sfx/menu/select-leftright.wav")
-          }
-        }
-      } else if (e.key === "ArrowLeft") {
-        if (this.selectedSetting === 0) {
-          const oldSelectedSetting = this.virusSlider.player1Value;
-          
-          this.virusSlider.setPlayer1Value(this.virusSlider.player1Value - 1)
-          this.player1VirusCount.setNumber(this.virusSlider.player1Value);
-
-          if (oldSelectedSetting !== this.virusSlider.player1Value) {
-            playSound("./assets/nes/sfx/menu/select-leftright.wav")
-          }
-        } else if (this.selectedSetting === 1) {
-          const oldSelectedSetting = this.speedSlider.player1Value;
-
-          this.speedSlider.setPlayer1Value(this.speedSlider.player1Value - 1)
-
-          if (oldSelectedSetting !== this.speedSlider.player1Value) {
-            playSound("./assets/nes/sfx/menu/select-leftright.wav")
-          }
-        } else if (this.selectedSetting === 2) {
-          const oldSelectedSetting = this.musicSlider.value;
-
-          this.musicSlider.setValue(this.musicSlider.value - 1)
-
-          if (oldSelectedSetting !== this.musicSlider.value) {
-            playSound("./assets/nes/sfx/menu/select-leftright.wav")
-          }
-        }
-      }
-    })
+    // Update config
+    this.setSelectedSlider(0);
   }
 
-  updateSelectedSetting() {
-    this.selectedSetting = Math.min(Math.max(this.selectedSetting, 0), 2);
-    this.virusCountHeading.setValue(this.selectedSetting === 0);
-    this.speedHeading.setValue(this.selectedSetting === 1);
-    this.musicTypeHeading.setValue(this.selectedSetting === 2);
+  set player1VirusLevel(value) {
+    this.virusSlider.setPlayer1Value(value);
+  }
+
+  get player1VirusLevel() {
+    this.virusSlider.player1Value;
+  }
+
+  set player1SpeedLevel(value) {
+    this.speedSlider.setPlayer1Value(value);
+  }
+
+  get player1SpeedLevel() {
+    this.speedSlider.player1Value;
+  }
+
+  set musicType(value) {
+    this.musicSlider.setValue(value);
+  }
+
+  get musicType() {
+    this.musicSlider.value;
+  }
+
+  set player2VirusLevel(value) {
+    this.virusSlider.setPlayer2Value(value);
+  }
+
+  get player2VirusLevel() {
+    this.virusSlider.player2Value;
+  }
+
+  set player2SpeedLevel(value) {
+    this.speedSlider.setPlayer2Value(value);
+  }
+
+  get player2SpeedLevel() {
+    this.speedSlider.player2Value;
+  }
+
+  setSelectedSlider(selectedSlider) {
+    this.selectedSlider = Math.max(Math.min(selectedSlider, 2), 0);
+    this.virusSlider.setFocused(this.selectedSlider === 0);
+    this.speedSlider.setFocused(this.selectedSlider === 1);
+    this.musicSlider.setFocused(this.selectedSlider === 2);
   }
 }
