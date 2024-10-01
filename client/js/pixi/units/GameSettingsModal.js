@@ -1,26 +1,20 @@
 import * as PIXI from "https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/+esm";
+import { Modal } from "../common/Modal.js";
 import { MenuVirusSlider } from "./MenuVirusSlider";
 import { MenuSpeedSlider } from "./MenuSpeedSlider.js";
 import { MenuMusicSlider } from "./MenuMusicSlider.js";
 
-export class GameSettingsModal extends PIXI.Container {
-  modalSprite;
-  modalTitleSprite;
+export class GameSettingsModal extends Modal {
   virusSlider;
   speedSlider;
   musicSlider;
   selectedSlider = 0;
 
   constructor() {
-    super();
 
-    // Modal sprite
-    this.modalSprite = PIXI.Sprite.from("./assets/nes/img/gui-panels/menu.png");
-
-    // Modal title sprite
-    this.modalTitleSprite = PIXI.Sprite.from("./assets/nes/img/gui/menu-title.png");
-    this.modalTitleSprite.position.x = 92;
-    this.modalTitleSprite.position.y = 16;
+    // Initialize the modal
+    const titleSprite = PIXI.Sprite.from("./assets/nes/img/gui/menu-title.png");
+    super(titleSprite);
 
     // Virus slider
     this.virusSlider = new MenuVirusSlider();
