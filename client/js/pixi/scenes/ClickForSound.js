@@ -1,6 +1,6 @@
 //enable-sound.png
 import * as PIXI from "https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/+esm";
-import { TiledBackground } from "../common/TiledBackground";
+import { TiledBackground } from "../common/TiledBackground.js";
 
 export class ClickForSoundScene extends PIXI.Container {
   background;
