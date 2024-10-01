@@ -37,6 +37,8 @@ jobs:
         run: npm i && cd client && npm i && cd ..
       - name: Build client
         run: npm run build:client
+      - name: Add the assets to the build
+        run: cp client/assets/ client-build/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
